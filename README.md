@@ -19,13 +19,21 @@ NOTE: if you are interested in a hosted solution, please take a look at
    entries).
 1. Pomerium: A identity-aware reverse proxy. This allows me to remote
    access PiHole's web UI.
-1. Certbot: Free Let's Encrypt certification (required by DNS-over-TLS).
 1. Autoheal: Auto-restart container that failed health check.
 1. Ouroboros: Auto-pull latest version of each container.
 
 ## Run the stack
 
-1. Create a network called `infra_network`
+The following instruction will run a list of jobs on docker to
+DNS-over-TLS service on port 853 and foward your request through PiHole
+then to Google DNS.
+
+NOTE: if you don't trust Google, please modify `./stubby/stubby.yml` and
+specify a different `upstream_recursive_servers`.
+
+1. Create a network called `infra_network`. (Why not create the network
+   in the compose file? Because you cannot *create* the `default` network
+   in compose file, and can only *replace* it with `external`.)
 ```
     docker network create --subnet 172.30.0.0/16 infra_network
 ```
@@ -35,14 +43,13 @@ NOTE: if you are interested in a hosted solution, please take a look at
 
 ```
 DNS_DOMAIN_NAME=dns.example.com
-# Optional.
-# If you want remote access to pihole web UI, remove pomerium from
+# All the remaining are optional.
+# If you don't want remote access to pihole web UI, remove pomerium from
 # docker-compose.yaml file.
 # See https://www.pomerium.io/docs/identity-providers.html on detailed
 # instruction.
 POMERIUM_CLIENT_ID=YOUR_CLIENT_ID
 POMERIUM_CLIENT_SECRET=YOUR_CLIENT_SECRET
-
 # Generate two random strings using `head -c32 /dev/urandom | base64`
 POMERIUM_SHARED_SECRET=YOUR_RANDOM_STRING
 POMERIUM_COOKIE_SECRET=YOUR_RANDOM_STRING
