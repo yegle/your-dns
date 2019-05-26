@@ -6,8 +6,8 @@ A docker-compose file to provide a secure adblocking DNS server
 
 ## Goal
 
-Run a secure DNS server (DNS-over-TLS for now, will add DNS-over-HTTPS
-later) that can do ad blocking and hide your DNS query from your ISP.
+Run a secure DoT (DNS-over-TLS) and DoH (DNS-over-HTTPS) DNS server that
+can do ad blocking and hide your DNS query from your ISP.
 
 ## Non Goal
 
@@ -30,7 +30,9 @@ behind public WiFis) is more important.
    does not reuse TLS connections which is a concern to me (my ATT
    gateway has an internal NAT table with limited # of entries).
    ([doc](https://dnsprivacy.org/wiki/display/DP/Configuring+Stubby))
-1. [Pomerium](https://pomerium.io): A identity-aware reverse proxy. This
+1. [DNS-over-HTTPS](https://github.com/m13253/dns-over-https): A DoH
+   server.
+1. [Pomerium](https://pomerium.io): An identity-aware reverse proxy. This
    allows me to remote access PiHole's web UI.
    ([reference](https://www.pomerium.io/reference/))
 1. [Autoheal](https://github.com/willfarrell/docker-autoheal):
@@ -46,7 +48,9 @@ behind public WiFis) is more important.
 1. Know how to DNAT from your public IP to the server running the stack.
    Or alternatively if you have IPv6, allow dport=853 access to your
    server.
-1. Know how to get a Let's Encrypt certificate for your domain.
+1. Know how to get a Let's Encrypt certificate for your domain. You need
+   a single wildcard certificate if you host both DoH server and pihole
+   on the same server.
 
 ## Run the stack
 
@@ -65,20 +69,7 @@ https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers.
 ```
     docker network create --subnet 172.30.0.0/16 infra_network
 ```
-2. Modify `.env` file:
-```
-DNS_DOMAIN_NAME=dns.example.com
-# All the remaining are optional.
-# If you don't want remote access to pihole web UI, remove pomerium from
-# docker-compose.yaml file.
-# See https://www.pomerium.io/docs/identity-providers.html on detailed
-# instruction.
-POMERIUM_CLIENT_ID=YOUR_CLIENT_ID
-POMERIUM_CLIENT_SECRET=YOUR_CLIENT_SECRET
-# Generate two random strings using `head -c32 /dev/urandom | base64`
-POMERIUM_SHARED_SECRET=YOUR_RANDOM_STRING
-POMERIUM_COOKIE_SECRET=YOUR_RANDOM_STRING
-```
+2. Modify `.env` file. See the comment in that file for instructions.
 3. Use your favorate ACME client to create free certificate from Let's
    Encrypt and save it in `./letsencrypt` directory. If your domain
    name's NS is Cloudflare, the following is an example on how to do it
@@ -99,5 +90,4 @@ POMERIUM_COOKIE_SECRET=YOUR_RANDOM_STRING
 
 ## TODO
 
-1. DNS-over-HTTPS support (Personally not using any device that supports
-   it).
+None
