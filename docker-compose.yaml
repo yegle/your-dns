@@ -52,7 +52,7 @@ services:
     dns: 172.29.1.1
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /opt/portainer:/data
+      - ./portainer:/data
     command: --no-auth
 
   ouroboros:
@@ -105,9 +105,9 @@ services:
     dns: 172.29.1.1
     restart: unless-stopped
     volumes:
-      - /opt/letsencrypt/etc:/etc/letsencrypt
-      - /opt/letsencrypt/var:/var/lib/letsencrypt
-      - /opt/letsencrypt/credentials.txt:/credentials.txt
+      - ./letsencrypt/etc:/etc/letsencrypt
+      - ./letsencrypt/var:/var/lib/letsencrypt
+      - ./letsencrypt/credentials.txt:/credentials.txt
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
   autoheal:
