@@ -22,3 +22,9 @@ nextdns.io. I'm not affiliated with nextdns.io.
 5. Certbot: Free Let's Encrypt certification (required by DNS-over-TLS).
 6. Autoheal: Auto-restart container that failed health check.
 7. Ouroboros: Auto-pull latest version of each container.
+
+## TODO
+
+1. Detailed instruction on how to turn this into a working stack.
+2. DNS-over-HTTPS support (Personally not using any device that supports
+   it.
