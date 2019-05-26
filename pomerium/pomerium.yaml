@@ -1,0 +1,13 @@
+services: all
+pomerium_debug: true
+http_redirect_addr: :80
+
+policy:
+  - from: pihole.example.com
+    to: http://pihole
+    timeout: 10m
+    allowed_users:
+      - YOUR_GMAIL_ACCOUNT
+  - from: dns.example.com
+    to: http://doh-server
+    allow_public_unauthenticated_access: true

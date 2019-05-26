@@ -74,8 +74,6 @@ services:
     depends_on:
       - pihole
     environment:
-      - POMERIUM_DEBUG=true
-      - SERVICES=all
       - IDP_PROVIDER=google
       - IDP_PROVIDER_URL=https://accounts.google.com
       - IDP_CLIENT_ID=${POMERIUM_CLIENT_ID}
@@ -86,16 +84,15 @@ services:
       - COOKIE_SECRET=${POMERIUM_COOKIE_SECRET}
       - CERTIFICATE_FILE=/etc/letsencrypt/live/${DOMAIN_NAME}/fullchain.pem
       - CERTIFICATE_KEY_FILE=/etc/letsencrypt/live/${DOMAIN_NAME}/privkey.pem
-      - POLICY_FILE=/pomerium/policy.yaml
       - GODEBUG=tls13=1
-      - HTTP_REDIRECT_ADDR=:80
     volumes:
       - ./letsencrypt/etc:/etc/letsencrypt:ro
       - ./letsencrypt/var:/var/lib/letsencrypt:ro
-      - ./pomerium/policy.yaml:/pomerium/policy.yaml:ro
+      - ./pomerium/pomerium.yaml:/pomerium.yaml:ro
     ports:
       - 443:443
       - 80:80
+    command: ["/bin/pomerium", "-config", "/pomerium.yaml"]
 
   autoheal:
     image: willfarrell/autoheal
