@@ -1,7 +1,7 @@
 # your-dns
 A docker-compose file to provide a secure adblocking DNS server
 
-NOTE: if you are interested in a hosted solution, please take a look at
+**NOTE**: if you are interested in a hosted solution, please take a look at
 [nextdns.io](https://nextdns.io). I'm not affiliated with nextdns.io.
 
 ## All components in this stack
@@ -33,8 +33,10 @@ The following instruction will run a list of jobs on docker to
 DNS-over-TLS service on port 853 and foward your request through PiHole
 then to Google DNS.
 
-NOTE: if you don't trust Google, please modify `./stubby/stubby.yml` and
-specify a different `upstream_recursive_servers`.
+**NOTE**: if you don't trust Google, please modify `./stubby/stubby.yml` and
+specify a different `upstream_recursive_servers`. A list of available
+DNS-over-TLS name server is available at
+https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers
 
 1. Create a network called `infra_network`. (Why not create the network
    in the compose file? Because you cannot *create* the `default` network
