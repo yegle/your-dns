@@ -38,6 +38,16 @@ behind public WiFis) is more important.
 1. [Ouroboros](https://github.com/pyouroboros/ouroboros): Auto-pull
    latest version of each container.
 
+## Prerequisites
+
+1. Install Docker ([how](https://docs.docker.com/v17.12/install/)) and
+   `docker-compose` command
+   ([how](https://docs.docker.com/compose/install/)).
+1. Know how to DNAT from your public IP to the server running the stack.
+   Or alternatively if you have IPv6, allow dport=853 access to your
+   server.
+1. Know how to get a Let's Encrypt certificate for your domain.
+
 ## Run the stack
 
 The following instruction will run a list of jobs on docker to
@@ -49,15 +59,12 @@ specify a different `upstream_recursive_servers`. A list of available
 DNS-over-TLS name server is available at
 https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers.
 
-To get started, you need to have Docker and `docker-compose` installed.
-
 1. Create a network called `infra_network`. (Why not create the network
    in the compose file? Because you cannot *create* the `default` network
    in compose file, and can only *replace* it with `external`.)
 ```
     docker network create --subnet 172.30.0.0/16 infra_network
 ```
-
 2. Modify `.env` file:
 ```
 DNS_DOMAIN_NAME=dns.example.com
@@ -72,7 +79,6 @@ POMERIUM_CLIENT_SECRET=YOUR_CLIENT_SECRET
 POMERIUM_SHARED_SECRET=YOUR_RANDOM_STRING
 POMERIUM_COOKIE_SECRET=YOUR_RANDOM_STRING
 ```
-
 3. Use your favorate ACME client to create free certificate from Let's
    Encrypt and save it in `./letsencrypt` directory. If your domain
    name's NS is Cloudflare, the following is an example on how to do it
