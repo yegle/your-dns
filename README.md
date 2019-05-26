@@ -26,8 +26,9 @@ NOTE: if you are interested in a hosted solution, please take a look at
 ## Run the stack
 
 1. Create a network called `infra_network`
-
+```
     docker network create --subnet 172.30.0.0/16 infra_network
+```
 
 2. Create an `.env` file in the directory of `docker-compose.yaml` file
    with the following content:
