@@ -1,0 +1,125 @@
+version: '2'
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    restart: unless-stopped
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 67:67/udp
+    environment:
+      - TZ=America/Los_Angeles
+      - DNS1=172.29.1.2
+      - DNS2=no
+      - VIRTUAL_HOST=${PIHOLE_PUBLIC_DOMAIN_NAME}
+    volumes:
+      - ./pihole/:/etc/pihole/
+      - ./dnsmasq.d/:/etc/dnsmasq.d/
+    dns: 127.0.0.1
+    depends_on:
+      - stubby
+    networks:
+        default:
+            ipv4_address: 172.29.1.1
+
+  stubby:
+    image: yegle/stubby-dns:latest
+    container_name: stubby
+    dns: 127.0.0.1
+    restart: unless-stopped
+    volumes:
+      - ./stubby:/usr/local/etc/stubby
+    networks:
+        default:
+            ipv4_address: 172.29.1.2
+
+  unbound:
+    image: yegle/unbound-dns:latest
+    container_name: unbound
+    dns: 172.29.1.1
+    restart: unless-stopped
+    ports:
+      - 853:853/tcp
+    volumes:
+      - ./unbound:/usr/local/etc/unbound
+      - ./letsencrypt/etc:/etc/letsencrypt:ro
+
+  portainer:
+    container_name: portainer
+    image: portainer/portainer:latest
+    restart: unless-stopped
+    dns: 172.29.1.1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/portainer:/data
+    command: --no-auth
+
+  ouroboros:
+    container_name: ouroboros
+    image: pyouroboros/ouroboros:latest
+    restart: unless-stopped
+    dns: 172.29.1.1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - SELF_UPDATE=true
+      - CLEANUP=true
+      - INTERVAL=3600
+
+  pomerium:
+    image: pomerium/pomerium:latest
+    container_name: pomerium
+    restart: unless-stopped
+    dns: 172.29.1.1
+    hostname: ${PIHOLE_PUBLIC_DOMAIN_NAME}
+    depends_on:
+      - pihole
+    environment:
+      - POMERIUM_DEBUG=true
+      - SERVICES=all
+      - IDP_PROVIDER=google
+      - IDP_PROVIDER_URL=https://accounts.google.com
+      - IDP_CLIENT_ID=${POMERIUM_CLIENT_ID}
+      - IDP_CLIENT_SECRET=${POMERIUM_CLIENT_SECRET}
+      - AUTHENTICATE_SERVICE_URL=https://${PIHOLE_PUBLIC_DOMAIN_NAME}
+      - AUTHORIZE_SERVICE_URL=https://${PIHOLE_PUBLIC_DOMAIN_NAME}
+      - SHARED_SECRET=${POMERIUM_SHARED_SECRET}
+      - COOKIE_SECRET=${POMERIUM_COOKIE_SECRET}
+      - CERTIFICATE_FILE=/etc/letsencrypt/live/${PIHOLE_PUBLIC_DOMAIN_NAME}/fullchain.pem
+      - CERTIFICATE_KEY_FILE=/etc/letsencrypt/live/${PIHOLE_PUBLIC_DOMAIN_NAME}/privkey.pem
+      - POLICY_FILE=/pomerium/policy.yaml
+      - GODEBUG=tls13=1
+      - HTTP_REDIRECT_ADDR=:80
+    volumes:
+      - ./letsencrypt/etc:/etc/letsencrypt:ro
+      - ./letsencrypt/var:/var/lib/letsencrypt:ro
+      - ./pomerium/policy.yaml:/pomerium/policy.yaml:ro
+    ports:
+      - 443:443
+      - 80:80
+
+  certbot:
+    image: certbot/dns-cloudflare:latest
+    container_name: certbot
+    dns: 172.29.1.1
+    restart: unless-stopped
+    volumes:
+      - /opt/letsencrypt/etc:/etc/letsencrypt
+      - /opt/letsencrypt/var:/var/lib/letsencrypt
+      - /opt/letsencrypt/credentials.txt:/credentials.txt
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  autoheal:
+    image: willfarrell/autoheal
+    container_name: autoheal
+    restart: always
+    environment:
+      - AUTOHEAL_CONTAINER_LABEL=all
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+    default:
+        external:
+            name: infra_network
