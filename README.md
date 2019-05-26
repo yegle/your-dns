@@ -4,6 +4,17 @@ A docker-compose file to provide a secure adblocking DNS server
 **NOTE**: if you are interested in a hosted solution, please take a look at
 [nextdns.io](https://nextdns.io). I'm not affiliated with nextdns.io.
 
+## Goal
+
+Run a secure DNS server (DNS-over-TLS for now, will add DNS-over-HTTPS
+later) that can do ad blocking and hide your DNS query from your ISP.
+
+## Non Goal
+
+Hide your DNS query from upstream recursive DNS server. Why? Because to
+me hide my trail from various ISPs (Verizon, ATT, and any other ISPs
+behind public WiFis) is more important.
+
 ## All components in this stack
 
 1. [Unbound](https://nlnetlabs.nl/projects/unbound/about/): A DNS server
@@ -36,7 +47,7 @@ then to Google DNS.
 **NOTE**: if you don't trust Google, please modify `./stubby/stubby.yml` and
 specify a different `upstream_recursive_servers`. A list of available
 DNS-over-TLS name server is available at
-https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers
+https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers.
 
 1. Create a network called `infra_network`. (Why not create the network
    in the compose file? Because you cannot *create* the `default` network
@@ -62,10 +73,10 @@ POMERIUM_SHARED_SECRET=YOUR_RANDOM_STRING
 POMERIUM_COOKIE_SECRET=YOUR_RANDOM_STRING
 ```
 
-3. Use your favorate tool to create free certificate from Let's Encrypt
-   and save it in `./letsencrypt` directory. If your domain name's NS is
-   on cloudflare, the following is an example on how to do it within
-   docker:
+3. Use your favorate ACME client to create free certificate from Let's
+   Encrypt and save it in `./letsencrypt` directory. If your domain
+   name's NS is Cloudflare, the following is an example on how to do it
+   within docker:
 ```
   certbot:
     image: certbot/dns-cloudflare:latest
@@ -83,4 +94,4 @@ POMERIUM_COOKIE_SECRET=YOUR_RANDOM_STRING
 ## TODO
 
 1. DNS-over-HTTPS support (Personally not using any device that supports
-   it.
+   it).
