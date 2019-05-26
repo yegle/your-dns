@@ -49,6 +49,8 @@ specify a different `upstream_recursive_servers`. A list of available
 DNS-over-TLS name server is available at
 https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers.
 
+To get started, you need to have Docker and `docker-compose` installed.
+
 1. Create a network called `infra_network`. (Why not create the network
    in the compose file? Because you cannot *create* the `default` network
    in compose file, and can only *replace* it with `external`.)
@@ -56,9 +58,7 @@ https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers.
     docker network create --subnet 172.30.0.0/16 infra_network
 ```
 
-2. Create an `.env` file in the directory of `docker-compose.yaml` file
-   with the following content:
-
+2. Modify `.env` file:
 ```
 DNS_DOMAIN_NAME=dns.example.com
 # All the remaining are optional.
@@ -87,7 +87,7 @@ POMERIUM_COOKIE_SECRET=YOUR_RANDOM_STRING
       - ./letsencrypt/etc:/etc/letsencrypt
       - ./letsencrypt/var:/var/lib/letsencrypt
       - ./letsencrypt/credentials.txt:/credentials.txt
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"	
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 ```
 4. `docker-compose up -d` and you are done :-)
 
