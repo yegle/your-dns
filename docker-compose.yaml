@@ -12,7 +12,7 @@ services:
       - TZ=America/Los_Angeles
       - DNS1=172.29.1.2
       - DNS2=no
-      - VIRTUAL_HOST=${PIHOLE_PUBLIC_DOMAIN_NAME}
+      - VIRTUAL_HOST=${DNS_DOMAIN_NAME}
     volumes:
       - ./pihole/:/etc/pihole/
       - ./dnsmasq.d/:/etc/dnsmasq.d/
@@ -72,7 +72,7 @@ services:
     container_name: pomerium
     restart: unless-stopped
     dns: 172.29.1.1
-    hostname: ${PIHOLE_PUBLIC_DOMAIN_NAME}
+    hostname: ${DNS_DOMAIN_NAME}
     depends_on:
       - pihole
     environment:
@@ -82,12 +82,12 @@ services:
       - IDP_PROVIDER_URL=https://accounts.google.com
       - IDP_CLIENT_ID=${POMERIUM_CLIENT_ID}
       - IDP_CLIENT_SECRET=${POMERIUM_CLIENT_SECRET}
-      - AUTHENTICATE_SERVICE_URL=https://${PIHOLE_PUBLIC_DOMAIN_NAME}
-      - AUTHORIZE_SERVICE_URL=https://${PIHOLE_PUBLIC_DOMAIN_NAME}
+      - AUTHENTICATE_SERVICE_URL=https://${DNS_DOMAIN_NAME}
+      - AUTHORIZE_SERVICE_URL=https://${DNS_DOMAIN_NAME}
       - SHARED_SECRET=${POMERIUM_SHARED_SECRET}
       - COOKIE_SECRET=${POMERIUM_COOKIE_SECRET}
-      - CERTIFICATE_FILE=/etc/letsencrypt/live/${PIHOLE_PUBLIC_DOMAIN_NAME}/fullchain.pem
-      - CERTIFICATE_KEY_FILE=/etc/letsencrypt/live/${PIHOLE_PUBLIC_DOMAIN_NAME}/privkey.pem
+      - CERTIFICATE_FILE=/etc/letsencrypt/live/${DNS_DOMAIN_NAME}/fullchain.pem
+      - CERTIFICATE_KEY_FILE=/etc/letsencrypt/live/${DNS_DOMAIN_NAME}/privkey.pem
       - POLICY_FILE=/pomerium/policy.yaml
       - GODEBUG=tls13=1
       - HTTP_REDIRECT_ADDR=:80
