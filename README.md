@@ -17,6 +17,8 @@ behind public WiFis) is more important.
 
 ## All components in this stack
 
+![overview of componetns](https://g.gravizo.com/source/svg?https://raw.githubusercontent.com/yegle/your-dns/master/graph.dot)
+
 1. [Unbound](https://nlnetlabs.nl/projects/unbound/about/): A DNS server
    that provide DNS-over-TLS service.
    ([doc](https://nlnetlabs.nl/documentation/unbound/unbound.conf/))
