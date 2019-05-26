@@ -45,16 +45,6 @@ services:
       - ./unbound:/usr/local/etc/unbound
       - ./letsencrypt/etc:/etc/letsencrypt:ro
 
-  portainer:
-    container_name: portainer
-    image: portainer/portainer:latest
-    restart: unless-stopped
-    dns: 172.29.1.1
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./portainer:/data
-    command: --no-auth
-
   ouroboros:
     container_name: ouroboros
     image: pyouroboros/ouroboros:latest
