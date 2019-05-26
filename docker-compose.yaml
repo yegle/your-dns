@@ -89,17 +89,6 @@ services:
       - 443:443
       - 80:80
 
-  certbot:
-    image: certbot/dns-cloudflare:latest
-    container_name: certbot
-    dns: 172.29.1.1
-    restart: unless-stopped
-    volumes:
-      - ./letsencrypt/etc:/etc/letsencrypt
-      - ./letsencrypt/var:/var/lib/letsencrypt
-      - ./letsencrypt/credentials.txt:/credentials.txt
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-
   autoheal:
     image: willfarrell/autoheal
     container_name: autoheal
