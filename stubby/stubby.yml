@@ -1,0 +1,17 @@
+resolution_type: GETDNS_RESOLUTION_STUB
+dns_transport_list:
+  # NOTE: force forward request over TLS connection.
+  - GETDNS_TRANSPORT_TLS
+tls_authentication: GETDNS_AUTHENTICATION_REQUIRED
+tls_query_padding_blocksize: 128
+edns_client_subnet_private : 0
+round_robin_upstreams: 1
+idle_timeout: 10000
+listen_addresses:
+  - 0.0.0.0
+dnssec: GETDNS_EXTENSION_TRUE
+appdata_dir: "/var/cache/stubby"
+upstream_recursive_servers:
+  # NOTE: adjust your needs accordingly. People don't necessarily trust Google.
+  - address_data: 8.8.8.8
+    tls_auth_name: "dns.google"
