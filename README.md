@@ -23,6 +23,40 @@ NOTE: if you are interested in a hosted solution, please take a look at
 6. Autoheal: Auto-restart container that failed health check.
 7. Ouroboros: Auto-pull latest version of each container.
 
+## Run the stack
+
+1. Create a network called `infra_network`
+
+    docker network create --subnet 172.30.0.0/16 infra_network
+
+2. Create an `.env` file in the directory of `docker-compose.yaml` file
+   with the following content:
+
+```
+DNS_DOMAIN_NAME=dns.example.com
+# Optional, if you want remote access to pihole web UI
+# See https://www.pomerium.io/docs/identity-providers.html on detailed
+# instruction.
+POMERIUM_CLIENT_ID=YOUR_CLIENT_ID
+POMERIUM_CLIENT_SECRET=YOUR_CLIENT_SECRET
+
+# Generate two random strings using `head -c32 /dev/urandom | base64`
+POMERIUM_SHARED_SECRET=YOUR_RANDOM_STRING
+POMERIUM_COOKIE_SECRET=YOUR_RANDOM_STRING
+```
+
+3. Configure certbot to generate certificate for your DNS server's
+   domain name. This is a tricky part, in order to ease the setup, I
+   switched to cloudflare as my name server and uses
+   `certbot/dns-cloudflare` image to get certificate via DNS challenge.
+   You'll likely need to adjust this part to your own situation.
+4. `docker-compose up -d` and you are done :-)
+
+(well I omitted a lot, i.e. you need configuration for
+unbound/stubby/pomerium. Until those are ready, please refer to each
+project's documentation on how to configure everything.)
+
+
 ## TODO
 
 1. Detailed instruction on how to turn this into a working stack.
