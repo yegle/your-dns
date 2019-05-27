@@ -17,7 +17,7 @@ behind public WiFis) is more important.
 
 ## All components in this stack
 
-![overview of componetns](https://g.gravizo.com/source/svg?https://raw.githubusercontent.com/yegle/your-dns/master/graph.dot)
+![overview of components](https://g.gravizo.com/source/svg?https://raw.githubusercontent.com/yegle/your-dns/master/graph.dot)
 
 1. [Unbound](https://nlnetlabs.nl/projects/unbound/about/): A DNS server
    that provide DNS-over-TLS service.
@@ -72,7 +72,7 @@ https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers.
     docker network create --subnet 172.30.0.0/16 infra_network
 ```
 2. Modify `.env` file. See the comment in that file for instructions.
-3. Use your favorate ACME client to create free certificate from Let's
+3. Use your favorite ACME client to create free certificate from Let's
    Encrypt and save it in `./letsencrypt` directory. If your domain
    name's NS is Cloudflare, the following is an example on how to do it
    within docker:
