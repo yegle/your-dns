@@ -9,7 +9,7 @@ services:
       - 53:53/udp
       - 67:67/udp
     environment:
-      - TZ=America/Los_Angeles
+      - TZ=${TZ}
       - DNS1=172.29.1.2
       - DNS2=no
       - VIRTUAL_HOST=${PIHOLE_DOMAIN_NAME}
