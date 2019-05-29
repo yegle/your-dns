@@ -88,11 +88,10 @@ services:
     volumes:
       - ./letsencrypt/etc:/etc/letsencrypt:ro
       - ./letsencrypt/var:/var/lib/letsencrypt:ro
-      - ./pomerium/pomerium.yaml:/pomerium.yaml:ro
+      - ./pomerium/config.yaml:/pomerium/config.yaml:ro
     ports:
       - 443:443
       - 80:80
-    command: ["/bin/pomerium", "-config", "/pomerium.yaml"]
 
   autoheal:
     image: willfarrell/autoheal
