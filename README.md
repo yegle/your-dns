@@ -15,6 +15,27 @@ Hide your DNS query from upstream recursive DNS server. Why? Because to
 me hide my trail from various ISPs (Verizon, ATT, and any other ISPs
 behind public WiFis) is more important.
 
+## Privacy Tradeoffs
+
+We are running a DNS forwarder instead of a DNS resolver. Running a
+forwarder and connect to upstream DNS over secure connection does hide
+your DNS queries from your ISP, but it would also leaks your web history
+(in the form of DNS query) to the upstream DNS.
+
+Your web history is always open to your ISP until ESNI is widely
+adopted. Even with ESNI, it's still easy for the ISP to learn your web
+history based on the IP addresses you connected.
+
+The main benefit of running a forwarder that communicate securely with
+upstream DNS is that your ISP won't be able to manipulate your DNS query
+results, e.g. hijack the `NXDOMAIN` response to show ads, force traffic
+to go through a transparent proxy (with more and more sites offering
+HTTPS, this is less of a concern) and so on.
+
+There's a trade off you need to make whether the benefit beats the
+reduced privacy. Personally, making it harder for the ISP to learn my web
+history is a good enough reason.
+
 ## All components in this stack
 
 ![overview of components](https://g.gravizo.com/source/svg?https://raw.githubusercontent.com/yegle/your-dns/master/graph.dot)
