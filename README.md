@@ -127,7 +127,8 @@ https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers.
 ```
     docker network create --subnet 172.30.0.0/16 infra_network
 ```
-2. Modify `.env` file. See the comment in that file for instructions.
+2. Rename `example.env` to `.env` and update the values in the file. See
+   the comment in that file for instructions.
 3. `docker-compose up -d` and you are done :-)
 
 ## TODO
