@@ -4,6 +4,10 @@ A docker-compose file to provide a secure adblocking DNS server
 **NOTE**: if you are interested in a hosted solution, please take a look at
 [nextdns.io](https://nextdns.io). I'm not affiliated with nextdns.io.
 
+**NEW**: Try using `your-dns.run` as a DNS-over-TLS server. You can use this
+domain with "Private DNS" feature in > Android 9 (Pie). This server is set up
+using the `your-dns-run` branch of this repo.
+
 ## Goal
 
 Run a secure DoT (DNS-over-TLS) and DoH (DNS-over-HTTPS) DNS server that
