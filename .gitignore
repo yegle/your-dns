@@ -1,2 +1,4 @@
 .env
 letsencrypt/
+dnsmasq.d/
+pihole/
