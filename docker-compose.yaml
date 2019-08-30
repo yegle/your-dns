@@ -46,7 +46,8 @@ services:
       - 853:853/tcp
     volumes:
       - ./unbound:/usr/local/etc/unbound
-      - ./letsencrypt/etc/live/${DOMAIN_NAME}:/certs:ro
+      - ./letsencrypt/etc/live/${DOMAIN_NAME}:/letsencrypt/domain/certs:ro
+      - ./letsencrypt/etc/archive:/letsencrypt/archive:ro
 
   doh-server:
     image: yegle/dns-over-https:latest
