@@ -10,7 +10,7 @@ services:
       - 67:67/udp
     environment:
       - TZ=${TZ}
-      - DNS1=172.29.1.2
+      - DNS1=172.30.1.2
       - DNS2=no
       - VIRTUAL_HOST=${PIHOLE_DOMAIN_NAME}
     volumes:
@@ -21,7 +21,7 @@ services:
       - stubby
     networks:
         default:
-            ipv4_address: 172.29.1.1
+            ipv4_address: 172.30.1.1
 
   stubby:
     image: yegle/stubby-dns:latest
@@ -32,12 +32,12 @@ services:
       - ./stubby:/usr/local/etc/stubby
     networks:
         default:
-            ipv4_address: 172.29.1.2
+            ipv4_address: 172.30.1.2
 
   unbound:
     image: yegle/unbound-dns:latest
     container_name: unbound
-    dns: 172.29.1.1
+    dns: 172.30.1.1
     restart: unless-stopped
     ports:
       - 853:853/tcp
@@ -48,7 +48,7 @@ services:
   doh-server:
     image: yegle/dns-over-https:latest
     container_name: doh-server
-    dns: 172.29.1.1
+    dns: 172.30.1.1
     restart: unless-stopped
     volumes:
       - ./doh-server.conf:/doh-server.conf:ro
@@ -57,7 +57,7 @@ services:
     container_name: ouroboros
     image: pyouroboros/ouroboros:latest
     restart: unless-stopped
-    dns: 172.29.1.1
+    dns: 172.30.1.1
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
@@ -69,7 +69,7 @@ services:
     image: pomerium/pomerium:latest
     container_name: pomerium
     restart: unless-stopped
-    dns: 172.29.1.1
+    dns: 172.30.1.1
     hostname: ${POMERIUM_DOMAIN_NAME}
     depends_on:
       - pihole
