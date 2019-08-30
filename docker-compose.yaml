@@ -4,10 +4,13 @@ services:
     container_name: pihole
     image: pihole/pihole:latest
     restart: unless-stopped
-    ports:
-      - 53:53/tcp
-      - 53:53/udp
-      - 67:67/udp
+    # NOTE: if you also want to access pihole via plaintext DNS query,
+    # uncomment the lines below.
+    # WARNING: Only enable these if you run your server in a LAN.
+    # ports:
+    #   - 53:53/tcp
+    #   - 53:53/udp
+    #   - 67:67/udp
     environment:
       - TZ=${TZ}
       - DNS1=172.30.1.2
