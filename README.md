@@ -75,6 +75,41 @@ history is a good enough reason.
    a single wildcard certificate if you host both DoH server and pihole
    on the same server.
 
+## Obtaining a wildcard certificate
+
+Obtaining a wildcard certificate can greatly simplify the setup.
+
+NOTE: this is not required. You can also create a certificate containing
+only the domains you use in your setup.
+
+There are many ways to automate the process, but here I use a `certbot`
+docker container with Cloudflare DNS as an example:
+
+1. Add the following section to the `docker-compose.yaml` file. **DO NOT
+   RUN `docker-compose up` yet.**
+```
+  certbot:
+    image: certbot/dns-cloudflare:latest
+    container_name: certbot
+    restart: unless-stopped
+    volumes:
+      - ./letsencrypt/etc:/etc/letsencrypt
+      - ./letsencrypt/var:/var/lib/letsencrypt
+      - ./letsencrypt/credentials.txt:/credentials.txt
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+```
+2. Create a `letsencrypt` directory in the same directory of
+   `docker-compose.yaml` file, create a `credentials.txt` file with your
+   Cloudflare Global API key (See
+   https://certbot-dns-cloudflare.readthedocs.io/en/stable/#credentials
+   for reference)
+3. Run the following command which should success.
+```
+$ docker-compose run --entrypoint="certbot certonly --email ${YOUR_EMAIL:?} -d *.${DOMAIN_NAME:?} --rsa-key-size=4096 --agree-tos --force-renewal --dns-cloudflare-credentials /credentials.txt --dns-cloudflare" certbot
+```
+4. Run `docker-compose up -d certbot` and certbot will check and renew the
+   certificate every 12h if necessary.
+
 ## Run the stack
 
 The following instruction will run a list of jobs on docker to
@@ -93,23 +128,7 @@ https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers.
     docker network create --subnet 172.30.0.0/16 infra_network
 ```
 2. Modify `.env` file. See the comment in that file for instructions.
-3. Use your favorite ACME client to create free certificate from Let's
-   Encrypt and save it in `./letsencrypt` directory. If your domain
-   name's NS is Cloudflare, the following is an example on how to do it
-   within docker:
-```
-  certbot:
-    image: certbot/dns-cloudflare:latest
-    container_name: certbot
-    dns: 172.29.1.1
-    restart: unless-stopped
-    volumes:
-      - ./letsencrypt/etc:/etc/letsencrypt
-      - ./letsencrypt/var:/var/lib/letsencrypt
-      - ./letsencrypt/credentials.txt:/credentials.txt
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-```
-4. `docker-compose up -d` and you are done :-)
+3. `docker-compose up -d` and you are done :-)
 
 ## TODO
 
