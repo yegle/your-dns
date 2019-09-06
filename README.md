@@ -44,9 +44,9 @@ history is a good enough reason.
 
 ![overview of components](https://g.gravizo.com/source/svg?https://raw.githubusercontent.com/yegle/your-dns/master/graph.dot)
 
-1. [Unbound](https://nlnetlabs.nl/projects/unbound/about/): A DNS server
-   that provide DNS-over-TLS service.
-   ([doc](https://nlnetlabs.nl/documentation/unbound/unbound.conf/))
+1. [CoreDNS](https://coredns.io): A DNS server that provide both
+   DNS-over-TLS and DNS-over-HTTPS service.
+   ([manual](https://coredns.io/manual/toc/))
 1. [Pihole](https://pi-hole.net): Ad blocking DNS server. Pihole forked
    dnsmasq and provide a nice UI to manage the DNS server.
    ([donate](https://pi-hole.net/donate/))
@@ -57,8 +57,6 @@ history is a good enough reason.
    does not reuse TLS connections which is a concern to me (my ATT
    gateway has an internal NAT table with limited # of entries).
    ([doc](https://dnsprivacy.org/wiki/display/DP/Configuring+Stubby))
-1. [DNS-over-HTTPS](https://github.com/m13253/dns-over-https): A DoH
-   server.
 1. [Pomerium](https://pomerium.io): An identity-aware reverse proxy. This
    allows me to remote access PiHole's web UI.
    ([reference](https://www.pomerium.io/reference/))
