@@ -4,7 +4,7 @@ digraph G {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
-    pomerium -> coredns -> pihole_dns;
+    pomerium -> coredns;
     coredns -> pihole_dns
     pihole_dns -> stubby_dns;
     label = "your-dns";
