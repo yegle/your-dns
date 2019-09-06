@@ -4,8 +4,8 @@ digraph G {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
-    pomerium -> doh_server -> pihole_dns;
-    unbound_dns -> pihole_dns
+    pomerium -> coredns -> pihole_dns;
+    coredns -> pihole_dns
     pihole_dns -> stubby_dns;
     label = "your-dns";
     subgraph cluster_1 {
@@ -18,6 +18,6 @@ digraph G {
   }
   client -> pomerium [label="DNS-over-HTTPS"];
   client -> pihole_web_ui [label="HTTPS\n(via pomerium)"];
-  client -> unbound_dns [label="DNS-over-TLS"];
+  client -> coredns [label="DNS-over-TLS"];
   stubby_dns -> google_dns [label="DNS-over-TLS"];
 }

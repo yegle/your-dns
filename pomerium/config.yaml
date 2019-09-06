@@ -9,5 +9,8 @@ policy:
     allowed_users:
       - YOUR_GMAIL_ACCOUNT
   - from: dns.example.com
-    to: http://doh-server
+    to: https://coredns
     allow_public_unauthenticated_access: true
+    # TODO: change to tls_server_name once
+    # https://github.com/pomerium/pomerium/pull/297 is merged.
+    tls_skip_verify: true

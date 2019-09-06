@@ -37,26 +37,6 @@ services:
         default:
             ipv4_address: 172.30.1.2
 
-  unbound:
-    image: yegle/unbound-dns:latest
-    container_name: unbound
-    dns: 172.30.1.1
-    restart: unless-stopped
-    ports:
-      - 853:853/tcp
-    volumes:
-      - ./unbound:/usr/local/etc/unbound
-      - ./letsencrypt/etc/live/${DOMAIN_NAME}:/letsencrypt/domain/certs:ro
-      - ./letsencrypt/etc/archive:/letsencrypt/archive:ro
-
-  doh-server:
-    image: yegle/dns-over-https:latest
-    container_name: doh-server
-    dns: 172.30.1.1
-    restart: unless-stopped
-    volumes:
-      - ./doh-server.conf:/doh-server.conf:ro
-
   ouroboros:
     container_name: ouroboros
     image: pyouroboros/ouroboros:latest
@@ -105,6 +85,19 @@ services:
       - AUTOHEAL_CONTAINER_LABEL=all
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+  coredns:
+    image: coredns/coredns
+    container_name: coredns
+    restart: always
+    environment:
+      - GODEBUG=tls13=1
+    volumes:
+      - ./Corefile:/Corefile
+      - ./letsencrypt/etc/live/${DOMAIN_NAME}/fullchain.pem:/fullchain.pem:ro
+      - ./letsencrypt/etc/live/${DOMAIN_NAME}/privkey.pem:/privkey.pem:ro
+    ports:
+      - 853:853
 
 networks:
     default:
