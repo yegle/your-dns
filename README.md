@@ -107,7 +107,7 @@ docker container with Cloudflare DNS as an example:
    for reference)
 3. Run the following command which should success.
 ```
-$ docker-compose run --entrypoint="certbot certonly --email ${YOUR_EMAIL:?} -d *.${DOMAIN_NAME:?} --rsa-key-size=4096 --agree-tos --force-renewal --dns-cloudflare-credentials /credentials.txt --dns-cloudflare" certbot
+docker-compose run --entrypoint="certbot certonly --email ${YOUR_EMAIL:?} -d *.${DOMAIN_NAME:?},${DOMAIN_NAME:?} --rsa-key-size=4096 --agree-tos --force-renewal --dns-cloudflare-credentials /credentials.txt --dns-cloudflare" certbot
 ```
 4. Run `docker-compose up -d certbot` and certbot will check and renew the
    certificate every 12h if necessary.
