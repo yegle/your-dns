@@ -2,7 +2,7 @@ version: '2'
 services:
   pihole:
     container_name: pihole
-    image: pihole/pihole:latest
+    image: docker.io/pihole/pihole:latest
     restart: unless-stopped
     # NOTE: if you also want to access pihole via plaintext DNS query,
     # uncomment the lines below.
@@ -27,7 +27,7 @@ services:
             ipv4_address: 172.30.1.1
 
   stubby:
-    image: yegle/stubby-dns:latest
+    image: docker.io/yegle/stubby-dns:latest
     container_name: stubby
     dns: 127.0.0.1
     restart: unless-stopped
@@ -39,7 +39,7 @@ services:
 
   ouroboros:
     container_name: ouroboros
-    image: pyouroboros/ouroboros:latest
+    image: docker.io/pyouroboros/ouroboros:latest
     restart: unless-stopped
     dns: 172.30.1.1
     volumes:
@@ -50,7 +50,7 @@ services:
       - INTERVAL=3600
 
   pomerium:
-    image: pomerium/pomerium:latest
+    image: docker.io/pomerium/pomerium:latest
     container_name: pomerium
     restart: unless-stopped
     dns: 172.30.1.1
@@ -76,7 +76,7 @@ services:
       - 80:80
 
   autoheal:
-    image: willfarrell/autoheal
+    image: docker.io/willfarrell/autoheal
     container_name: autoheal
     restart: always
     environment:
@@ -85,7 +85,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   coredns:
-    image: coredns/coredns
+    image: docker.io/coredns/coredns
     container_name: coredns
     restart: always
     environment:
