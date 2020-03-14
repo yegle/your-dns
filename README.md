@@ -109,11 +109,11 @@ docker-compose run --entrypoint="certbot certonly --email ${YOUR_EMAIL:?} -d *.$
 
 The following instruction will run a list of jobs on docker to
 DNS-over-TLS service on port 853 and foward your request through PiHole
-then to Google DNS.
+then to Cloudflare DNS.
 
-**NOTE**: if you don't trust Google, please modify `Corefile.backend`
-and specify a different server. A list of available DNS-over-TLS name
-server is available at
+By default the setup uses Cloudflare's 1.1.1.1 DNS server. You can
+modify `Corefile.backend` and specify a different server. A list of
+available DNS-over-TLS name server is available at
 https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers.
 
 1. Create a network called `infra_network`. (Why not create the network
