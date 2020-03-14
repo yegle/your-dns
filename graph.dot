@@ -6,7 +6,7 @@ digraph G {
     node [style=filled,color=white];
     pomerium -> coredns;
     coredns -> pihole_dns
-    pihole_dns -> stubby_dns;
+    pihole_dns -> coredns_backend;
     label = "your-dns";
     subgraph cluster_1 {
         style=filled;
@@ -19,5 +19,5 @@ digraph G {
   client -> pomerium [label="DNS-over-HTTPS"];
   client -> pihole_web_ui [label="HTTPS\n(via pomerium)"];
   client -> coredns [label="DNS-over-TLS"];
-  stubby_dns -> google_dns [label="DNS-over-TLS"];
+  coredns_backend -> google_dns [label="DNS-over-TLS"];
 }

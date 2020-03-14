@@ -21,18 +21,16 @@ services:
       - ./dnsmasq.d/:/etc/dnsmasq.d/
     dns: 127.0.0.1
     depends_on:
-      - stubby
+      - coredns-backend
     networks:
         default:
             ipv4_address: 172.30.1.1
 
-  stubby:
-    image: docker.io/yegle/stubby-dns:latest
-    container_name: stubby
-    dns: 127.0.0.1
-    restart: unless-stopped
+  coredns-backend:
+    image: docker.io/coredns/coredns
+    container_name: coredns-backend
     volumes:
-      - ./stubby:/usr/local/etc/stubby
+      - ./Corefile.backend:/Corefile
     networks:
         default:
             ipv4_address: 172.30.1.2
