@@ -50,19 +50,12 @@ history is a good enough reason.
 1. [Pihole](https://pi-hole.net): Ad blocking DNS server. Pihole forked
    dnsmasq and provide a nice UI to manage the DNS server.
    ([donate](https://pi-hole.net/donate/))
-1. [Stubby](https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Daemon+-+Stubby):
-   A DNS stub server, which support forwarding DNS request to upstream
-   DNS-over-TLS server. Note Unbound also support forwarding request to
-   upstream over TLS, but I was told (can't find the reference) Unbound
-   does not reuse TLS connections which is a concern to me (my ATT
-   gateway has an internal NAT table with limited # of entries).
-   ([doc](https://dnsprivacy.org/wiki/display/DP/Configuring+Stubby))
 1. [Pomerium](https://pomerium.io): An identity-aware reverse proxy. This
    allows me to remote access PiHole's web UI.
    ([reference](https://www.pomerium.io/reference/))
-1. [Autoheal](https://github.com/willfarrell/docker-autoheal):
+1. Optional: [Autoheal](https://github.com/willfarrell/docker-autoheal):
    Auto-restart container that failed health check.
-1. [Ouroboros](https://github.com/pyouroboros/ouroboros): Auto-pull
+1. Optional: [Ouroboros](https://github.com/pyouroboros/ouroboros): Auto-pull
    latest version of each container.
 
 ## Prerequisites
@@ -118,9 +111,9 @@ The following instruction will run a list of jobs on docker to
 DNS-over-TLS service on port 853 and foward your request through PiHole
 then to Google DNS.
 
-**NOTE**: if you don't trust Google, please modify `./stubby/stubby.yml` and
-specify a different `upstream_recursive_servers`. A list of available
-DNS-over-TLS name server is available at
+**NOTE**: if you don't trust Google, please modify `Corefile.backend`
+and specify a different server. A list of available DNS-over-TLS name
+server is available at
 https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers.
 
 1. Create a network called `infra_network`. (Why not create the network
