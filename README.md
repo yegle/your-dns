@@ -93,16 +93,16 @@ docker container with Cloudflare DNS as an example:
       - ./letsencrypt/credentials.txt:/credentials.txt
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 ```
-2. Create a `letsencrypt` directory in the same directory of
+1. Create a `letsencrypt` directory in the same directory of
    `docker-compose.yaml` file, create a `credentials.txt` file with your
    Cloudflare Global API key (See
    https://certbot-dns-cloudflare.readthedocs.io/en/stable/#credentials
    for reference)
-3. Run the following command which should success.
+1. Run the following command which should success.
 ```
 docker-compose run --entrypoint="certbot certonly --email ${YOUR_EMAIL:?} -d *.${DOMAIN_NAME:?},${DOMAIN_NAME:?} --rsa-key-size=4096 --agree-tos --force-renewal --dns-cloudflare-credentials /credentials.txt --dns-cloudflare" certbot
 ```
-4. Run `docker-compose up -d certbot` and certbot will check and renew the
+1. Run `docker-compose up -d certbot` and certbot will check and renew the
    certificate every 12h if necessary.
 
 ## Run the stack
@@ -122,9 +122,11 @@ https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers.
 ```
     docker network create --subnet 172.30.0.0/16 infra_network
 ```
-2. Rename `example.env` to `.env` and update the values in the file. See
+1. Rename `example.env` to `.env` and update the values in the file. See
    the comment in that file for instructions.
-3. `docker-compose up -d` and you are done :-)
+1. Update the `tls_server_name` in `pomerium.yaml` to match the actual
+   domain name you will use.
+1. `docker-compose up -d` and you are done :-)
 
 ## TODO
 

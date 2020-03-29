@@ -12,6 +12,4 @@ policy:
   - from: https://dns.example.com
     to: https://coredns
     allow_public_unauthenticated_access: true
-    # TODO: change to tls_server_name once
-    # https://github.com/pomerium/pomerium/pull/297 is merged.
-    tls_skip_verify: true
+    tls_server_name: YOUR_DOMAIN_NAME
