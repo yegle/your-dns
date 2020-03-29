@@ -4,3 +4,11 @@ tls://.:853 https://.:443 {
     log
     any
 }
+.:1053 {
+    forward . tls://1.1.1.1 {
+        tls_servername cloudflare-dns.com
+        health_check 5s
+    }
+    cache
+    errors
+}

@@ -21,7 +21,7 @@ services:
     #   - 67:67/udp
     environment:
       - TZ=${TZ}
-      - DNS1=172.30.1.2
+      - DNS1=172.30.1.2#1053
       - DNS2=no
       - VIRTUAL_HOST=${PIHOLE_DOMAIN_NAME}
     volumes:
@@ -29,19 +29,10 @@ services:
       - ./dnsmasq.d/:/etc/dnsmasq.d/
     dns: 127.0.0.1
     depends_on:
-      - coredns-backend
+      - coredns
     networks:
         default:
             ipv4_address: 172.30.1.1
-
-  coredns-backend:
-    image: docker.io/coredns/coredns
-    container_name: coredns-backend
-    volumes:
-      - ./Corefile.backend:/Corefile
-    networks:
-        default:
-            ipv4_address: 172.30.1.2
 
   ouroboros:
     container_name: ouroboros
@@ -100,6 +91,9 @@ services:
       - *ssl-key
     ports:
       - 853:853
+    networks:
+        default:
+            ipv4_address: 172.30.1.2
 
 networks:
     default:
