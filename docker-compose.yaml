@@ -67,7 +67,7 @@ services:
     volumes:
       - *ssl-cert
       - *ssl-key
-      - ./pomerium/config.yaml:/pomerium/config.yaml:ro
+      - ./pomerium.yaml:/pomerium/config.yaml:ro
     ports:
       - 443:443
       - 80:80
