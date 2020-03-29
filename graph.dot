@@ -4,9 +4,9 @@ digraph G {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
-    pomerium -> coredns;
-    coredns -> pihole_dns
-    pihole_dns -> coredns_backend;
+    pomerium -> coredns_DoH [label="HTTPS"];
+    coredns_DoH -> pihole_dns [label="plaintext DNS"];
+    pihole_dns -> coredns_DNS [label="plaintext DNS"];
     label = "your-dns";
     subgraph cluster_1 {
         style=filled;
@@ -15,9 +15,17 @@ digraph G {
         pihole_dns;
         pihole_web_ui;
     }
+    subgraph cluster_2 {
+        style=filled;
+        color=grey;
+        label="coredns"
+        coredns_DNS [label="DNS (port 53)"];
+        coredns_DoT [label="DNS-over-TLS (port 853)"];
+        coredns_DoH [label="DNS-over-HTTPS (port 443)"];
+    }
   }
   client -> pomerium [label="DNS-over-HTTPS"];
   client -> pihole_web_ui [label="HTTPS\n(via pomerium)"];
-  client -> coredns [label="DNS-over-TLS"];
-  coredns_backend -> google_dns [label="DNS-over-TLS"];
+  client -> coredns_DoT [label="DNS-over-TLS"];
+  coredns_DNS -> google_dns [label="DNS-over-TLS", ltail=cluster_2];
 }
