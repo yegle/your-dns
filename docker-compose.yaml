@@ -94,8 +94,6 @@ services:
     image: docker.io/coredns/coredns
     container_name: coredns
     restart: always
-    environment:
-      - GODEBUG=tls13=1
     volumes:
       - ./Corefile:/Corefile
       - *ssl-cert
