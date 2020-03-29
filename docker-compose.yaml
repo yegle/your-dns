@@ -1,4 +1,12 @@
 version: '2'
+
+x-ssl-service:
+  volumes:
+    - &ssl-cert
+      ./letsencrypt/etc/live/${DOMAIN_NAME}/fullchain.pem:/fullchain.pem:ro
+    - &ssl-key
+      ./letsencrypt/etc/live/${DOMAIN_NAME}/privkey.pem:/privkey.pem:ro
+
 services:
   pihole:
     container_name: pihole
@@ -63,11 +71,11 @@ services:
       - AUTHENTICATE_SERVICE_URL=https://${POMERIUM_DOMAIN_NAME}
       - SHARED_SECRET=${POMERIUM_SHARED_SECRET}
       - COOKIE_SECRET=${POMERIUM_COOKIE_SECRET}
-      - CERTIFICATE_FILE=/etc/letsencrypt/live/${DOMAIN_NAME}/fullchain.pem
-      - CERTIFICATE_KEY_FILE=/etc/letsencrypt/live/${DOMAIN_NAME}/privkey.pem
+      - CERTIFICATE_FILE=/fullchain.pem
+      - CERTIFICATE_KEY_FILE=/privkey.pem
     volumes:
-      - ./letsencrypt/etc:/etc/letsencrypt:ro
-      - ./letsencrypt/var:/var/lib/letsencrypt:ro
+      - *ssl-cert
+      - *ssl-key
       - ./pomerium/config.yaml:/pomerium/config.yaml:ro
     ports:
       - 443:443
@@ -90,8 +98,8 @@ services:
       - GODEBUG=tls13=1
     volumes:
       - ./Corefile:/Corefile
-      - ./letsencrypt/etc/live/${DOMAIN_NAME}/fullchain.pem:/fullchain.pem:ro
-      - ./letsencrypt/etc/live/${DOMAIN_NAME}/privkey.pem:/privkey.pem:ro
+      - *ssl-cert
+      - *ssl-key
     ports:
       - 853:853
 
