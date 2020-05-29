@@ -70,41 +70,6 @@ history is a good enough reason.
    a single wildcard certificate if you host both DoH server and pihole
    on the same server.
 
-## Obtaining a wildcard certificate
-
-Obtaining a wildcard certificate can greatly simplify the setup.
-
-NOTE: this is not required. You can also create a certificate containing
-only the domains you use in your setup.
-
-There are many ways to automate the process, but here I use a `certbot`
-docker container with Cloudflare DNS as an example:
-
-1. Add the following section to the `docker-compose.yaml` file. **DO NOT
-   RUN `docker-compose up` yet.**
-```
-  certbot:
-    image: certbot/dns-cloudflare:latest
-    container_name: certbot
-    restart: unless-stopped
-    volumes:
-      - ./letsencrypt/etc:/etc/letsencrypt
-      - ./letsencrypt/var:/var/lib/letsencrypt
-      - ./letsencrypt/credentials.txt:/credentials.txt
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-```
-1. Create a `letsencrypt` directory in the same directory of
-   `docker-compose.yaml` file, create a `credentials.txt` file with your
-   Cloudflare Global API key (See
-   https://certbot-dns-cloudflare.readthedocs.io/en/stable/#credentials
-   for reference)
-1. Run the following command which should success.
-```
-docker-compose run --entrypoint="certbot certonly --email ${YOUR_EMAIL:?} -d *.${DOMAIN_NAME:?},${DOMAIN_NAME:?} --rsa-key-size=4096 --agree-tos --force-renewal --dns-cloudflare-credentials /credentials.txt --dns-cloudflare" certbot
-```
-1. Run `docker-compose up -d certbot` and certbot will check and renew the
-   certificate every 12h if necessary.
-
 ## Run the stack
 
 The following instruction will run a list of jobs on docker to

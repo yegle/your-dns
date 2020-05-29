@@ -2,10 +2,12 @@ version: '2'
 
 x-ssl-service:
   volumes:
-    - &ssl-cert
-      ./letsencrypt/etc/live/${DOMAIN_NAME}/fullchain.pem:/fullchain.pem:ro
-    - &ssl-key
-      ./letsencrypt/etc/live/${DOMAIN_NAME}/privkey.pem:/privkey.pem:ro
+    - &dns-ssl-cert
+      ./pomerium/certificates/acme-v02.api.letsencrypt.org-directory/${DNS_DOMAIN_NAME}/${DNS_DOMAIN_NAME}.crt:/ssl.crt:ro
+    - &dns-ssl-key
+      ./pomerium/certificates/acme-v02.api.letsencrypt.org-directory/${DNS_DOMAIN_NAME}/${DNS_DOMAIN_NAME}.key:/ssl.key:ro
+    - &autocert
+      ./pomerium:/certificates
 
 services:
   pihole:
@@ -62,12 +64,10 @@ services:
       - AUTHENTICATE_SERVICE_URL=https://${POMERIUM_DOMAIN_NAME}
       - SHARED_SECRET=${POMERIUM_SHARED_SECRET}
       - COOKIE_SECRET=${POMERIUM_COOKIE_SECRET}
-      - CERTIFICATE_FILE=/fullchain.pem
-      - CERTIFICATE_KEY_FILE=/privkey.pem
+      - AUTOCERT_DIR=/certificates
     volumes:
-      - *ssl-cert
-      - *ssl-key
       - ./pomerium.yaml:/pomerium/config.yaml:ro
+      - *autocert
     ports:
       - 443:443
       - 80:80
@@ -87,8 +87,8 @@ services:
     restart: always
     volumes:
       - ./Corefile:/Corefile
-      - *ssl-cert
-      - *ssl-key
+      - *dns-ssl-cert
+      - *dns-ssl-key
     ports:
       - 853:853
     networks:
