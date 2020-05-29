@@ -1,5 +1,5 @@
 tls://.:853 https://.:443 {
-    tls /fullchain.pem /privkey.pem
+    tls /ssl.crt /ssl.key
     forward . 172.30.1.1:53
     log
     any
