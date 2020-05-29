@@ -2,6 +2,7 @@ services: all
 pomerium_debug: true
 http_redirect_addr: :80
 grpc_client_dns_roundrobin: false
+autocert: true
 
 policy:
   - from: https://pihole.example.com
