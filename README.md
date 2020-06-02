@@ -66,9 +66,6 @@ history is a good enough reason.
 1. Know how to DNAT from your public IP to the server running the stack.
    Or alternatively if you have IPv6, allow dport=853 access to your
    server.
-1. Know how to get a Let's Encrypt certificate for your domain. You need
-   a single wildcard certificate if you host both DoH server and pihole
-   on the same server.
 
 ## Run the stack
 
