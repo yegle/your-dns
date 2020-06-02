@@ -1,4 +1,4 @@
 .env
-pomeirum/
+pomerium/
 adguard/work/
-adguard/conf/AdguardHome.yaml
+adguard/conf/AdGuardHome.yaml
