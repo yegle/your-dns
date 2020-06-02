@@ -87,6 +87,8 @@ https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers.
 ```
 1. Rename `example.env` to `.env` and update the values in the file. See
    the comment in that file for instructions.
+1. Rename `adguard/conf/AdguardHome.yaml.example` to
+   `adguard/conf/AdguardHome.yaml`.
 1. Update the `tls_server_name` in `pomerium.yaml` to match the actual
    domain name you will use.
 1. `docker-compose up -d` and you are done :-)
