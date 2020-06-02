@@ -44,19 +44,20 @@ history is a good enough reason.
 
 ![overview of components](https://g.gravizo.com/source/svg?https://raw.githubusercontent.com/yegle/your-dns/master/graph.dot)
 
-1. [CoreDNS](https://coredns.io): A DNS server that provide both
-   DNS-over-TLS and DNS-over-HTTPS service.
-   ([manual](https://coredns.io/manual/toc/))
-1. [Pihole](https://pi-hole.net): Ad blocking DNS server. Pihole forked
-   dnsmasq and provide a nice UI to manage the DNS server.
-   ([donate](https://pi-hole.net/donate/))
+1. [Adguard Home](https://github.com/AdguardTeam/AdGuardHome): Ad
+   blocking DNS server with native DoT/DoH support.
 1. [Pomerium](https://pomerium.io): An identity-aware reverse proxy. This
-   allows me to remote access PiHole's web UI.
+   allows me to remote access PiHole's web UI. More importantly,
+   Pomerium is used to get SSL certificate automatically from Let's
+   Encrypt.
    ([reference](https://www.pomerium.io/reference/))
 1. Optional: [Autoheal](https://github.com/willfarrell/docker-autoheal):
    Auto-restart container that failed health check.
 1. Optional: [Ouroboros](https://github.com/pyouroboros/ouroboros): Auto-pull
    latest version of each container.
+
+**NOTE**: Previously Pihole+CoreDNS was used. That setup was deprecated. If
+you are still looking for that, take a look at the "pihole" branch.
 
 ## Prerequisites
 

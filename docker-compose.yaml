@@ -10,28 +10,25 @@ x-ssl-service:
       ./pomerium:/certificates
 
 services:
-  pihole:
-    container_name: pihole
-    image: docker.io/pihole/pihole:latest
-    restart: unless-stopped
-    # NOTE: if you also want to access pihole via plaintext DNS query,
+  adguard:
+    container_name: adguard
+    image: docker.io/adguard/adguardhome
+    dns: 127.0.0.1
+    volumes:
+      - *dns-ssl-cert
+      - *dns-ssl-key
+      - ./adguard/work:/opt/adguardhome/work
+      - ./adguard/conf:/opt/adguardhome/conf
+    environment:
+      - TZ=${TZ}
+    ports:
+    # NOTE: if you also want to access adguard via plaintext DNS query,
     # uncomment the lines below.
     # WARNING: Only enable these if you run your server in a LAN.
-    # ports:
     #   - 53:53/tcp
     #   - 53:53/udp
     #   - 67:67/udp
-    environment:
-      - TZ=${TZ}
-      - DNS1=172.30.1.2#1053
-      - DNS2=no
-      - VIRTUAL_HOST=${PIHOLE_DOMAIN_NAME}
-    volumes:
-      - ./pihole/:/etc/pihole/
-      - ./dnsmasq.d/:/etc/dnsmasq.d/
-    dns: 127.0.0.1
-    depends_on:
-      - coredns
+      - 853:853/tcp
     networks:
         default:
             ipv4_address: 172.30.1.1
@@ -80,20 +77,6 @@ services:
       - AUTOHEAL_CONTAINER_LABEL=all
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-
-  coredns:
-    image: docker.io/coredns/coredns
-    container_name: coredns
-    restart: always
-    volumes:
-      - ./Corefile:/Corefile
-      - *dns-ssl-cert
-      - *dns-ssl-key
-    ports:
-      - 853:853
-    networks:
-        default:
-            ipv4_address: 172.30.1.2
 
 networks:
     default:

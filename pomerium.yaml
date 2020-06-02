@@ -5,12 +5,12 @@ grpc_client_dns_roundrobin: false
 autocert: true
 
 policy:
-  - from: https://pihole.example.com
-    to: http://pihole
+  - from: https://adguard.example.com
+    to: http://adguard
     timeout: 10m
     allowed_users:
       - YOUR_GMAIL_ACCOUNT
   - from: https://dns.example.com
-    to: https://coredns
+    to: https://adguard
     allow_public_unauthenticated_access: true
     tls_server_name: YOUR_DOMAIN_NAME

@@ -9,31 +9,15 @@ digraph G {
     subgraph cluster_2 {
         style=filled;
         color=grey;
-        label="coredns"
-        coredns_encrypted [label="Encrypted DNS (port 853/443)"];
-        coredns_DNS [label="Plaintext DNS\n(port 53)"];
+        label="Adguard Home"
+        adguard_admin [label="Admin UI"];
+        adguard_dns [label="Encrypted DNS"];
     }
-    pihole;
   }
-  subgraph cluster_3 {
-      label="Legend";
-      node [shape="plaintext"];
-    key [label=<<table border="0" cellpadding="0" cellspacing="0" cellborder="0">
-      <tr><td align="right" port="i1">Encrypted (DoT/DoH)</td></tr>
-      <tr><td align="right" port="i2">Unencrypted (Plaintext DNS)</td></tr>
-      </table>>]
-    key2 [label=<<table border="0" cellpadding="0" cellspacing="0" cellborder="0">
-      <tr><td port="i1">&nbsp;</td></tr>
-      <tr><td port="i2">&nbsp;</td></tr>
-      </table>>]
-    key:i1:e -> key2:i1:w [color=red]
-    key:i2:e -> key2:i2:w [color=blue]
-  }
-  client -> coredns_encrypted [label="DoT or DoH", color="blue"];
+  client -> adguard_dns [label="DoT or DoH"];
 
-  coredns_encrypted -> pihole [color="red"];
-  pihole -> coredns_DNS [color="red"];
+  admin -> adguard_admin [label="(via Pomerium)"];
 
-  coredns_DNS -> google_dns [label="DNS-over-TLS", ltail=cluster_2, color="blue"];
-  google_dns -> key:i1:w [style="invis"];
+  adguard_dns -> google_dns [label="DNS-over-HTTPS"];
+  adguard_dns -> cloudflare_dns [label="DNS-over-HTTPS"];
 }
