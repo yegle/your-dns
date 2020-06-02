@@ -13,7 +13,6 @@ services:
   adguard:
     container_name: adguard
     image: docker.io/adguard/adguardhome
-    dns: 127.0.0.1
     volumes:
       - *dns-ssl-cert
       - *dns-ssl-key
@@ -37,7 +36,6 @@ services:
     container_name: ouroboros
     image: docker.io/pyouroboros/ouroboros:latest
     restart: unless-stopped
-    dns: 172.30.1.1
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
@@ -49,7 +47,6 @@ services:
     image: docker.io/pomerium/pomerium:latest
     container_name: pomerium
     restart: unless-stopped
-    dns: 172.30.1.1
     hostname: ${POMERIUM_DOMAIN_NAME}
     environment:
       - IDP_PROVIDER=google
