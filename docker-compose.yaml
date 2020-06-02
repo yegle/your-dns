@@ -51,8 +51,6 @@ services:
     restart: unless-stopped
     dns: 172.30.1.1
     hostname: ${POMERIUM_DOMAIN_NAME}
-    depends_on:
-      - pihole
     environment:
       - IDP_PROVIDER=google
       - IDP_PROVIDER_URL=https://accounts.google.com
