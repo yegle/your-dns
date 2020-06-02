@@ -35,7 +35,6 @@ services:
   ouroboros:
     container_name: ouroboros
     image: docker.io/pyouroboros/ouroboros:latest
-    restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
@@ -46,7 +45,6 @@ services:
   pomerium:
     image: docker.io/pomerium/pomerium:latest
     container_name: pomerium
-    restart: unless-stopped
     hostname: ${POMERIUM_DOMAIN_NAME}
     environment:
       - IDP_PROVIDER=google
@@ -69,7 +67,6 @@ services:
   autoheal:
     image: docker.io/willfarrell/autoheal
     container_name: autoheal
-    restart: always
     environment:
       - AUTOHEAL_CONTAINER_LABEL=all
     volumes:

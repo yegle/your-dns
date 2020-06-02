@@ -5,13 +5,18 @@ grpc_client_dns_roundrobin: false
 autocert: true
 
 policy:
-  - from: https://dns.example.com
-    to: https://adguard
+  - from: https://your-dns.run
     path: /dns-query
+    to: https://adguard
     allow_public_unauthenticated_access: true
-    tls_server_name: YOUR_DOMAIN_NAME
-  - from: https://adguard.example.com
+    tls_server_name: your-dns.run
+  - from: https://your-dns.run
+    allow_public_unauthenticated_access: true
+    redirect:
+        host_redirect: github.com
+        path_redirect: /yegle/your-dns
+  - from: https://adguard.your-dns.run
     to: http://adguard
     timeout: 10m
     allowed_users:
-      - YOUR_GMAIL_ACCOUNT
+      - cnyegle@gmail.com
