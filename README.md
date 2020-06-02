@@ -74,8 +74,8 @@ DNS-over-TLS service on port 853 and foward your request through PiHole
 then to Cloudflare DNS.
 
 By default the setup uses Cloudflare's 1.1.1.1 DNS server. You can
-modify `Corefile.backend` and specify a different server. A list of
-available DNS-over-TLS name server is available at
+modify `Corefile` and specify a different server. A list of DNS-over-TLS
+name server is available at
 https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Test+Servers.
 
 1. Create a network called `infra_network`. (Why not create the network
