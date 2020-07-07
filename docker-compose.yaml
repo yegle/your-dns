@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 
 x-ssl-service:
   volumes:
@@ -63,6 +63,8 @@ services:
     ports:
       - 443:443
       - 80:80
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 0
 
   autoheal:
     image: docker.io/willfarrell/autoheal
