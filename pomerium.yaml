@@ -12,5 +12,6 @@ policy:
       - YOUR_GMAIL_ACCOUNT
   - from: https://dns.example.com
     to: https://adguard
+    path: /dns-query
     allow_public_unauthenticated_access: true
     tls_server_name: YOUR_DOMAIN_NAME
